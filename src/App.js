@@ -1,4 +1,5 @@
 import { useState } from "react";
+import Logo from "./Logo";
 
 export default function App() {
   const [items, setItems] = useState([]);
@@ -19,6 +20,11 @@ export default function App() {
     );
   }
 
+  function handleClearList() {
+    const confirmed = window.confirm("本当に削除しますか?");
+    if (confirmed) setItems([]);
+  }
+
   return (
     <div className="app">
       <Logo />
@@ -27,15 +33,13 @@ export default function App() {
         items={items}
         onDeleteItem={handleDeleteItem}
         onToggleItem={handleToggleItem}
+        onClearList={handleClearList}
       />
       <Stats items={items} />
     </div>
   );
 }
 
-function Logo() {
-  return <h1>🏝️ Far Away ✈️</h1>;
-}
 function Form({ onAddItems }) {
   const [name, setName] = useState("");
   const [quantity, setQuantity] = useState(1);
@@ -76,7 +80,7 @@ function Form({ onAddItems }) {
     </form>
   );
 }
-function PackingList({ items, onDeleteItem, onToggleItem }) {
+function PackingList({ items, onDeleteItem, onToggleItem, onClearList }) {
   const [sortBy, setSortBy] = useState("input");
 
   let sortedItems;
@@ -108,6 +112,7 @@ function PackingList({ items, onDeleteItem, onToggleItem }) {
           <option value="name">Sort by name</option>
           <option value="packed">Sort by packed status</option>
         </select>
+        <button onClick={onClearList}>Clear list</button>
       </div>
     </div>
   );
